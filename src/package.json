@@ -1,0 +1,8 @@
+{
+  "name": "sam-lambda-test",
+  "version": "1.0.0",
+  "dependencies": {
+    "@shelf/aws-lambda-libreoffice": "^2.2.0",
+    "temp-units-conv": "^1.0.2"
+  }
+}

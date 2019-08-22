@@ -10,14 +10,27 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/
-      Handler: app.handler
+      Handler: temperature.handler
       Layers:
         - !Ref TempConversionDepLayer
       Events:
-        HelloWorld:
+        Temperature:
           Type: Api
           Properties:
             Path: /{conversion}/{value}
+            Method: get
+  OfficeCoversionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: office.handler
+      Layers:
+        - arn:aws:lambda:us-west-2:764866452798:layer:libreoffice:1
+      Events:
+        Convert:
+          Type: Api
+          Properties:
+            Path: /office
             Method: get
   TempConversionDepLayer:
     Type: AWS::Serverless::LayerVersion
