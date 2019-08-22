@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: sam app
+Globals:
+  Function:
+    Timeout: 3
+    Runtime: nodejs10.x
+Resources:
+  TempConversionFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: app.handler
+      Layers:
+        - !Ref TempConversionDepLayer
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /{conversion}/{value}
+            Method: get
+  TempConversionDepLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: sam-app-dependencies
+      Description: Dependencies for sam app [temp-units-conv]
+      ContentUri: dependencies/
+      CompatibleRuntimes:
+        - nodejs10.x
+      LicenseInfo: "MIT"
+      RetentionPolicy: Retain
