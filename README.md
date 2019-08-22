@@ -30,6 +30,18 @@ This is a sample template for temp-conv - Below is a brief explanation of what w
 
 ### Local development
 
+**Pull the code**
+
+```
+git pull git@github.com:ljinke/aws-sam-sample.git
+```
+
+**Install packages**
+
+```
+cd dependencies/nodejs && npm install && cd ...
+```
+
 **Invoking function locally using a local sample payload**
 
 ```bash
@@ -42,7 +54,16 @@ sam local invoke TempConversionFunction --event event.json
 sam local start-api
 ```
 
-If the previous command ran successfully you should now be able to hit the following local endpoint to invoke your function `http://localhost:3000/hello`
+If the previous command ran successfully you should now be able to hit the following local endpoint to invoke your function `http://127.0.0.1:3000/f2c/45`, and get response:
+
+```
+{
+    source: "fahrenheit",
+    target: "celsius",
+    original: "45",
+    answer: 7.222222222222222
+}
+```
 
 **SAM CLI** is used to emulate both Lambda and API Gateway locally and uses our `template.yaml` to understand how to bootstrap this environment (runtime, where the source code is, etc.) - The following excerpt is what the CLI will read in order to initialize an API and its routes:
 
@@ -65,7 +86,7 @@ AWS Lambda NodeJS runtime requires a flat folder with all dependencies including
     HelloWorldFunction:
         Type: AWS::Serverless::Function
         Properties:
-            CodeUri: hello-world/
+            CodeUri: src/
             ...
 ```
 
@@ -120,7 +141,7 @@ You can find more information and examples about filtering Lambda function logs 
 We use `mocha` for testing our code and it is already added in `package.json` under `scripts`, so that we can simply run the following command to run our tests:
 
 ```bash
-cd hello-world
+cd src
 npm install
 npm run test
 ```
