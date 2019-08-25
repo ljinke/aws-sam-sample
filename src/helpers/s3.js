@@ -51,8 +51,17 @@ const downloadFile = async (filePath, key) => {
         Key: key,
     }
     const targetStream = fs.createWritableStream(filePath);
+    const sourceStream = s3.getObject(params).createReadStream();
 
-    return s3.getObject(params).createReadStream().pipe(targetStream);
+    return new Promise((resolve, reject) => {
+        sourceStream.pipe(targetStream);
+        sourceStream.on("error", (err) => {
+            reject(err);
+        });
+        targetStream.on("end", function() {
+            resolve(targetStream);
+        });
+    });
 }
 
 module.exports = { downloadFile, uploadFile };
