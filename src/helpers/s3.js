@@ -43,6 +43,8 @@ const uploadFile = async (filePath, key) => {
     // Save the Location (url) to your database and Key if needs be.
     // As good developers, we should return the url and let other function do the saving to database etc
     console.log(Location, Key);
+
+    return Location;
 }
 
 const downloadFile = async (filePath, key) => {
@@ -54,12 +56,12 @@ const downloadFile = async (filePath, key) => {
     const sourceStream = s3.getObject(params).createReadStream();
 
     return new Promise((resolve, reject) => {
-        sourceStream.pipe(targetStream);
+        sourceStream.pipe(targetStream); // rd | wt
         sourceStream.on("error", (err) => {
             reject(err);
         });
-        targetStream.on("end", function() {
-            resolve(targetStream);
+        targetStream.on("end", () => {
+            resolve();
         });
     });
 }
